@@ -32,8 +32,9 @@
 import { PropType } from 'vue'
 import { Item, ItemCheckable } from '@/types'
 
+import { assoc, equals, map, when } from 'ramda'
 import { Options, Vue, prop } from 'vue-class-component'
-import { getCheckedItemIds, getCheckedItems, getInitializedEditingItems } from './module'
+import { getCheckedItemIds } from './module'
 
 import TheModalItems from '@/components/TheModal/Items/Component.vue'
 
@@ -53,11 +54,18 @@ export default class TheModal extends Vue.with(Props) {
   private editingItems: ItemCheckable[] = []
 
   public created () {
-    this.editingItems = getInitializedEditingItems(this.items)
+    this.editingItems = map(
+      assoc('isChecked', false)
+    )(this.items)
   }
 
   private checkItem ({ shouldBeChecked, targetItem }: { shouldBeChecked: boolean; targetItem: ItemCheckable }) {
-    this.editingItems = getCheckedItems(shouldBeChecked, targetItem)(this.editingItems)
+    this.editingItems = map(
+      when(
+        equals(targetItem),
+        assoc('isChecked', shouldBeChecked)
+      )
+    )(this.editingItems)
   }
 
   private onDeleteClick () {
