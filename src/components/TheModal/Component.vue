@@ -54,12 +54,14 @@ export default class TheModal extends Vue.with(Props) {
   private editingItems: ItemCheckable[] = []
 
   public created () {
+    // https://qiita.com/minericefield/items/25b7ff953149e224ae75#%E9%96%A2%E6%95%B0%E5%9E%8B
     this.editingItems = map(
       assoc('isChecked', false)
     )(this.items)
   }
 
   private checkItem ({ shouldBeChecked, targetItem }: { shouldBeChecked: boolean; targetItem: ItemCheckable }) {
+    // https://qiita.com/minericefield/items/25b7ff953149e224ae75#%E9%96%A2%E6%95%B0%E5%9E%8B
     this.editingItems = map(
       when(
         equals(targetItem),
