@@ -23,6 +23,7 @@
         v-if="isModalVisible"
         :items="items"
         @on-cancel-click="isModalVisible = false"
+        @on-delete-click="deleteItems"
       />
     </teleport>
     <teleport to="#loader-overlay">
@@ -35,7 +36,7 @@
 import { Item } from '@/types'
 
 import { Options, Vue } from 'vue-class-component'
-import { fetchItems } from './module'
+import { fetchItems, fetchRemainedItems } from './module'
 
 import TheModal from '@/components/TheModal/Component.vue'
 import TheLoader from '@/components/TheLoader/Component.vue'
@@ -54,6 +55,13 @@ export default class TheView extends Vue {
   public async created () {
     this.isLoaderVisible = true
     this.items = await fetchItems(20)
+    this.isLoaderVisible = false
+  }
+
+  private async deleteItems (deleteTargetIds: number[]) {
+    this.isModalVisible = false
+    this.isLoaderVisible = true
+    this.items = await fetchRemainedItems(deleteTargetIds)(this.items)
     this.isLoaderVisible = false
   }
 }
