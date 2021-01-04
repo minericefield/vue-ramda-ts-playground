@@ -27,6 +27,7 @@ import { PropType } from 'vue'
 import { Item, ItemCheckable } from '@/types'
 
 import { Options, Vue, prop } from 'vue-class-component'
+import { getInitializedEditingItems } from './module'
 
 class Props {
   public items = prop({
@@ -39,6 +40,10 @@ class Props {
 })
 export default class TheModal extends Vue.with(Props) {
   private editingItems: ItemCheckable[] = []
+
+  public created () {
+    this.editingItems = getInitializedEditingItems(this.items)
+  }
 }
 </script>
 
