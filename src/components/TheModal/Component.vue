@@ -1,11 +1,11 @@
 <template>
   <transition name="the-modal-fade" appear>
     <div class="the-modal d-flex align-items-center justify-content-center fixed-top w-100 h-100 p-5">
-      <div class="the-modal-content d-flex flex-column w-100">
+      <div class="the-modal-content d-flex flex-column w-100 rounded overflow-hidden bg-white">
         <the-modal-items
           :items="editingItems"
           @on-check="checkItem"
-          class="flex-grow-1 overflow-auto"
+          class="flex-grow-1 overflow-auto rounded-0"
         />
         <nav class="navbar navbar-light bg-light">
           <button
