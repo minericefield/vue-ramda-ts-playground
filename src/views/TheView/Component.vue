@@ -10,13 +10,15 @@
       </button>
     </nav>
     <ul class="list-group">
-      <li
-        v-for="item in items"
-        :key="item.id"
-        class="item list-group-item w-100 border-top-0 border-left-0 border-right-0"
-      >
-        {{ item.name }}
-      </li>
+      <transition-group name="item-fade">
+        <li
+          v-for="item in items"
+          :key="item.id"
+          class="item list-group-item w-100 border-top-0 border-left-0 border-right-0"
+        >
+          {{ item.name }}
+        </li>
+      </transition-group>
     </ul>
     <teleport to="#modal-overlay">
       <the-modal
@@ -73,5 +75,18 @@ export default class TheView extends Vue {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.item-fade-leave-active {
+  animation: shrink .4s;
+  overflow: hidden;
+}
+@keyframes shrink {
+  100% {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+    opacity: 0;
+  }
 }
 </style>
