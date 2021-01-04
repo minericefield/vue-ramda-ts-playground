@@ -9,15 +9,26 @@
         {{ item.name }}
       </li>
     </ul>
+    <teleport to="#loader-overlay">
+      <the-loader v-if="isLoaderVisible" />
+    </teleport>
   </div>
 </template>
 
 <script lang="ts">
 import { Item } from '@/types'
 
-import { Vue } from 'vue-class-component'
+import { Options, Vue } from 'vue-class-component'
 
+import TheLoader from '@/components/TheLoader/Component.vue'
+
+@Options({
+  components: {
+    TheLoader
+  }
+})
 export default class TheView extends Vue {
   private items: Item[] = []
+  private isLoaderVisible = false
 }
 </script>
