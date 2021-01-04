@@ -16,6 +16,7 @@
             Cancel
           </button>
           <button
+            @click="onDeleteClick"
             type="button"
             class="btn btn-danger"
           >
@@ -32,7 +33,7 @@ import { PropType } from 'vue'
 import { Item, ItemCheckable } from '@/types'
 
 import { Options, Vue, prop } from 'vue-class-component'
-import { getCheckedItems, getInitializedEditingItems } from './module'
+import { getCheckedItemIds, getCheckedItems, getInitializedEditingItems } from './module'
 
 import TheModalItems from '@/components/TheModal/Items/Component.vue'
 
@@ -46,7 +47,7 @@ class Props {
   components: {
     TheModalItems
   },
-  emits: ['on-cancel-click']
+  emits: ['on-cancel-click', 'on-delete-click']
 })
 export default class TheModal extends Vue.with(Props) {
   private editingItems: ItemCheckable[] = []
@@ -57,6 +58,10 @@ export default class TheModal extends Vue.with(Props) {
 
   private checkItem ({ shouldBeChecked, targetItem }: { shouldBeChecked: boolean; targetItem: ItemCheckable }) {
     this.editingItems = getCheckedItems(shouldBeChecked, targetItem)(this.editingItems)
+  }
+
+  private onDeleteClick () {
+    this.$emit('on-delete-click', getCheckedItemIds(this.editingItems))
   }
 }
 </script>
