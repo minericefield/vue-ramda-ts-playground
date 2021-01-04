@@ -1,6 +1,6 @@
 import { Item } from '@/types'
 
-import { andThen, applySpec, concat, identity, pipe, times, toString } from 'ramda'
+import { __, andThen, applySpec, concat, curry, identity, includes, pipe, prop, reject, times, toString } from 'ramda'
 import { delay } from '@/utilities'
 
 const createItemNameFromNumber = pipe<number, string, string>(
@@ -13,10 +13,24 @@ const createItemFromNumber = applySpec({
   name: createItemNameFromNumber
 })
 
+const isItemIncludedInIds = curry(
+  (ids: number[], item: Item) => pipe(
+    prop<'id', number>('id'),
+    includes(__, ids)
+  )(item)
+)
+
 export const fetchItems = pipe<number, Promise<number>, Promise<Item[]>>(
   delay(1000, identity),
   andThen(
     times(createItemFromNumber)
+  )
+)
+
+export const fetchRemainedItems = (deleteTargetIds: number[]) => pipe(
+  delay<[Item[]], Item[]>(1000, identity),
+  andThen(
+    reject<Item>(isItemIncludedInIds(deleteTargetIds))
   )
 )
 
@@ -26,3 +40,17 @@ export const fetchItems = pipe<number, Promise<number>, Promise<Item[]>>(
 //     times(createItemFromNumber)
 //   )
 // )
+
+// export const fetchRemainedItems = (rejectTargetIds: number[]) => pipe<Item[], Promise<Item[]>, Promise<Item[]>>(
+//   delay(1000, identity),
+//   andThen(
+//     reject<Item>(isItemIncludedInIds(rejectTargetIds))
+//   )
+// )
+
+// export const fetchRemainedItems = (rejectTargetIds: number[], items: Item[]) => pipe(
+//   delay<[Item[]], Item[]>(1000, identity),
+//   andThen(
+//     reject<Item>(isItemIncludedInIds(rejectTargetIds))
+//   )
+// )(items)
