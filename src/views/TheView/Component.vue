@@ -39,3 +39,12 @@ export default class TheView extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.item {
+  height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
