@@ -19,6 +19,7 @@
 import { Item } from '@/types'
 
 import { Options, Vue } from 'vue-class-component'
+import { fetchItems } from './module'
 
 import TheLoader from '@/components/TheLoader/Component.vue'
 
@@ -30,5 +31,11 @@ import TheLoader from '@/components/TheLoader/Component.vue'
 export default class TheView extends Vue {
   private items: Item[] = []
   private isLoaderVisible = false
+
+  public async created () {
+    this.isLoaderVisible = true
+    this.items = await fetchItems(20)
+    this.isLoaderVisible = false
+  }
 }
 </script>
