@@ -1,7 +1,12 @@
 import { Item, ItemCheckable } from '@/types'
 
-import { equals, map, when } from 'ramda'
-import { addIsChecked } from '@/utilities'
+import { equals, filter, map, pipe, pluck, when } from 'ramda'
+import { addIsChecked, isChecked } from '@/utilities'
+
+export const getCheckedItemIds = pipe<ItemCheckable[], ItemCheckable[], number[]>(
+  filter(isChecked),
+  pluck('id')
+)
 
 export const getCheckedItems = (shouldBeChecked: boolean, targetItem: ItemCheckable) => map(
   when(
