@@ -13,6 +13,8 @@ const createItemFromNumber = applySpec({
   name: createItemNameFromNumber
 })
 
+const createItemsFromNumber = times(createItemFromNumber)
+
 const isItemIncludedInIds = curry(
   (ids: number[], item: Item) => pipe(
     prop<'id', number>('id'),
@@ -23,7 +25,7 @@ const isItemIncludedInIds = curry(
 export const fetchItems = pipe<number, Promise<number>, Promise<Item[]>>(
   delay(1000, identity),
   andThen(
-    times(createItemFromNumber)
+    createItemsFromNumber
   )
 )
 
